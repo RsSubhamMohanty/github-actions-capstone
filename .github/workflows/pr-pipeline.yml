@@ -4,24 +4,20 @@ on:
   pull_request:
     branches:
       - main
-    types:
-      - opened
-      - synchronize
-
-permissions:
-  contents: read
+    types: [opened, synchronize]
 
 jobs:
   build-test:
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      python-version: "3.12"
-      run_tests: true
+      python-version: 3.12
+      run_tests: true  
 
   pr-comment:
-    needs: build-test
     runs-on: ubuntu-latest
+    needs: build-test
+
     steps:
-      - name: PR checks summary
+      - name: Print PR message
         run: |
           echo "PR checks passed for branch: ${{ github.head_ref }}"
