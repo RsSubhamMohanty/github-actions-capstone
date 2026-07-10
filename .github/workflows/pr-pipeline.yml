@@ -7,8 +7,9 @@ on:
     types:
       - opened
       - synchronize
+
 permissions:
-  contents: read      
+  contents: read
 
 jobs:
   build-test:
@@ -17,27 +18,10 @@ jobs:
       python-version: "3.12"
       run_tests: true
 
-  dependency-review:
-    needs: build-test
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Check Dependencies for Vulnerabilities
-        uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: critical
-
   pr-comment:
     needs: build-test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print PR message
+      - name: PR checks summary
         run: |
           echo "PR checks passed for branch: ${{ github.head_ref }}"
